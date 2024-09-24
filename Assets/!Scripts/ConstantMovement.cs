@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class Movement : MonoBehaviour
+public class ConstantMovement : MonoBehaviour
 {
     [SerializeField] float farthestZ = 28f;
     float speed = 5f;
