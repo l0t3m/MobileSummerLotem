@@ -3,8 +3,10 @@ using UnityEngine;
 
 public class ConstantMovement : MonoBehaviour
 {
-    [SerializeField] float farthestZ = 28f;
-    float speed = 5f;
+    float farthestZ = 28f; // Furthest road's Z
+    float speed = 10f; // The speed of the world moving
+
+
     void Update()
     {
         transform.position += Vector3.back * speed * Time.deltaTime; // Constant movement

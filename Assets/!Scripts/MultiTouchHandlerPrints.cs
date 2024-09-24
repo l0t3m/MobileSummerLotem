@@ -1,10 +1,12 @@
+using System;
 using UnityEngine;
 
 public class MultiTouchHandlerPrints : MonoBehaviour
 {
-    public PlayerHorizontalMovement PlayerHorizontalMovement;
+    public PlayerMovement PlayerHorizontalMovement;
     private Touch startTouch;
-    private float minSwipeDistance = 500f;
+    
+    
 
     void Update()
     {
@@ -16,7 +18,6 @@ public class MultiTouchHandlerPrints : MonoBehaviour
         for (int i = 0; i < touchCount; i++)
         {
             Touch touch = Input.GetTouch(i);
-            //Debug.Log("Touch " + i + " - Position: " + touch.position + " Phase: " + touch.phase);
 
             switch (touch.phase)
             {
@@ -25,14 +26,16 @@ public class MultiTouchHandlerPrints : MonoBehaviour
                     break;
 
                 case TouchPhase.Ended:
-                    SwipeDirection dir = SwipeDetector.DetectSwipe(startTouch, touch, minSwipeDistance);
+                    SwipeDirection dir = SwipeDetector.DetectSwipe(startTouch, touch);
 
                     if (dir != SwipeDirection.None)
                     {
-                        if (dir == SwipeDirection.Right)
-                            PlayerHorizontalMovement.MoveRight();
-                        else
-                            PlayerHorizontalMovement.MoveLeft();
+                        if (dir == SwipeDirection.Right && transform.position.x < 3.5f && PlayerHorizontalMovement.CanMove)
+                            StartCoroutine(PlayerHorizontalMovement.MoveRight(transform.position.x + 3.5f));
+                        else if (dir == SwipeDirection.Left && transform.position.x > -3.5f && PlayerHorizontalMovement.CanMove)
+                            StartCoroutine(PlayerHorizontalMovement.MoveLeft(transform.position.x - 3.5f));
+                        else if (dir == SwipeDirection.Up && PlayerHorizontalMovement.animator.GetBool("IsGrounded"))
+                            PlayerHorizontalMovement.MoveUp();
                     }
                     break;
             }
