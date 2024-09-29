@@ -16,7 +16,7 @@ public class ConstantMovement : MonoBehaviour
     {
         if (other.tag == "RoadCollider")
         {
-            transform.position = new Vector3(0, 0, farthestZ + transform.position.z);
+            transform.position = new Vector3(transform.position.x, transform.position.y, farthestZ + transform.position.z);
         }
     }
 }
