@@ -64,7 +64,6 @@ public class PlayerMovement : MonoBehaviour
         animator.SetBool("IsGrounded", false);
         rb.AddForce(Vector3.up*verticalSpeed, ForceMode.Impulse);
         transform.position = new Vector3(transform.position.x, Mathf.Clamp(transform.position.y, 0, 30), transform.position.z);
-        //if (IsInputValid(SwipeDirection.Up))
     }
 
 

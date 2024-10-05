@@ -15,30 +15,45 @@ public class MultiTouchHandlerPrints : MonoBehaviour
         if (touchCount < 1)
             return;
         
-        for (int i = 0; i < touchCount; i++)
+        if (PlayerPrefs.GetInt("Input", 0) == 0)
         {
-            Touch touch = Input.GetTouch(i);
-
-            switch (touch.phase)
+            for (int i = 0; i < touchCount; i++)
             {
-                case TouchPhase.Began:
-                    startTouch = Input.GetTouch(0);
-                    break;
+                Touch touch = Input.GetTouch(i);
 
-                case TouchPhase.Ended:
-                    SwipeDirection dir = SwipeDetector.DetectSwipe(startTouch, touch);
+                switch (touch.phase)
+                {
+                    case TouchPhase.Began:
+                        startTouch = Input.GetTouch(0);
+                        break;
 
-                    if (dir != SwipeDirection.None)
-                    {
-                        if (dir == SwipeDirection.Right && transform.position.x < 3.5f && PlayerHorizontalMovement.CanMove)
-                            StartCoroutine(PlayerHorizontalMovement.MoveRight(transform.position.x + 3.5f));
-                        else if (dir == SwipeDirection.Left && transform.position.x > -3.5f && PlayerHorizontalMovement.CanMove)
-                            StartCoroutine(PlayerHorizontalMovement.MoveLeft(transform.position.x - 3.5f));
-                        else if (dir == SwipeDirection.Up && PlayerHorizontalMovement.animator.GetBool("IsGrounded"))
-                            PlayerHorizontalMovement.MoveUp();
-                    }
-                    break;
+                    case TouchPhase.Ended:
+                        SwipeDirection dir = SwipeDetector.DetectSwipe(startTouch, touch);
+
+                        if (dir != SwipeDirection.None)
+                        {
+                            if (dir == SwipeDirection.Right)
+                                StartCoroutineRight();
+                            else if (dir == SwipeDirection.Left)
+                                StartCoroutineLeft();
+                            else if (dir == SwipeDirection.Up && PlayerHorizontalMovement.animator.GetBool("IsGrounded"))
+                                PlayerHorizontalMovement.MoveUp();
+                        }
+                        break;
+                }
             }
         }
     }
+    public void StartCoroutineRight()
+    {
+        if (transform.position.x < 3.5f && PlayerHorizontalMovement.CanMove)
+            StartCoroutine(PlayerHorizontalMovement.MoveRight(transform.position.x + 3.5f));
+    }
+
+    public void StartCoroutineLeft()
+    {
+        if (transform.position.x > -3.5f && PlayerHorizontalMovement.CanMove)
+            StartCoroutine(PlayerHorizontalMovement.MoveLeft(transform.position.x - 3.5f));
+    }
+
 }
