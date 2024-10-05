@@ -11,6 +11,7 @@ public class SettingsHandler : MonoBehaviour
     [SerializeField] Slider audioSlider;
     [SerializeField] Button[] DifficultyButtons;
     [SerializeField] Button[] InputButtons;
+    [SerializeField] Button[] MovementButtons;
 
     private void Start()
     {
@@ -52,6 +53,10 @@ public class SettingsHandler : MonoBehaviour
                 InputButtons[i].interactable = false;
             else
                 InputButtons[i].interactable = true;
+        }
+        for (int i = 0; i < MovementButtons.Length; i++)
+        {
+            MovementButtons[i].gameObject.SetActive(num == 1);
         }
     }
 }

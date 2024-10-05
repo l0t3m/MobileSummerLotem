@@ -7,7 +7,7 @@ public class PauseGame : MonoBehaviour
 {
     [SerializeField] GameObject pausePanel;
     private bool isPaused = false;
-
+    public bool IsPaused { get { return isPaused; }}
 
 
     private void Awake()

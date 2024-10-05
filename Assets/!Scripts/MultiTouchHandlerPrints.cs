@@ -4,6 +4,7 @@ using UnityEngine;
 public class MultiTouchHandlerPrints : MonoBehaviour
 {
     public PlayerMovement PlayerHorizontalMovement;
+    public PauseGame PauseGameScript;
     private Touch startTouch;
     
     
@@ -12,10 +13,10 @@ public class MultiTouchHandlerPrints : MonoBehaviour
     {
         int touchCount = Input.touchCount;
 
-        if (touchCount < 1)
+        if (touchCount < 1 )
             return;
         
-        if (PlayerPrefs.GetInt("Input", 0) == 0)
+        if (PlayerPrefs.GetInt("Input", 0) == 0 && !PauseGameScript.IsPaused)
         {
             for (int i = 0; i < touchCount; i++)
             {
@@ -56,4 +57,9 @@ public class MultiTouchHandlerPrints : MonoBehaviour
             StartCoroutine(PlayerHorizontalMovement.MoveLeft(transform.position.x - 3.5f));
     }
 
+    public void StartUp()
+    {
+        if (PlayerHorizontalMovement.animator.GetBool("IsGrounded"))
+            PlayerHorizontalMovement.MoveUp();
+    }
 }
