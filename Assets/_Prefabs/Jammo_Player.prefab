@@ -1921,7 +1921,6 @@ GameObject:
   - component: {fileID: 3256325705547334306}
   - component: {fileID: 5440365417207851539}
   - component: {fileID: 7472059435972186737}
-  - component: {fileID: 5986362934477255842}
   m_Layer: 0
   m_Name: Jammo_Player
   m_TagString: Player
@@ -2084,7 +2083,6 @@ MonoBehaviour:
   horizontalSpeed: 15
   verticalSpeed: 1.5
   animator: {fileID: 7635726066119915157}
-  CanMove: 1
 --- !u!54 &3256325705547334306
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -2131,8 +2129,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.40264714, y: 1.5225463, z: 1}
-  m_Center: {x: 0.017950565, y: 0.7673503, z: 0}
+  m_Size: {x: 0.40264714, y: 0.061943248, z: 1}
+  m_Center: {x: 0.017950565, y: 0.037048854, z: 0}
 --- !u!114 &7472059435972186737
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2146,18 +2144,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PlayerHorizontalMovement: {fileID: 5070681932431494515}
---- !u!114 &5986362934477255842
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3541754002163558908}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cb30d7d1f594f6c41b3908bdd6df3d4a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &3921334144448749991
 GameObject:
   m_ObjectHideFlags: 0
