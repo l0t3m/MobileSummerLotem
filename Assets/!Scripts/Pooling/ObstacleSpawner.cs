@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,8 +9,8 @@ public class ObstacleSpawner : MonoBehaviour
     public static ObstacleSpawner instance;
 
     [SerializeField] private float obstacleSpawnDistance = 56f;
-    [SerializeField] Object[] VehicleObstacles;
-    [SerializeField] Object[] LowObstacles;
+    private float[] obstaclePositions = new float[] { -3.5f, 0f, 3.5f };
+    
 
     private void Awake()
     {
@@ -23,11 +24,8 @@ public class ObstacleSpawner : MonoBehaviour
         for (int i = 0; i < obstacleAmount; i++)
         {
             positions[i] = GenerateObstaclePosition(positions[0], positions[1]);
-            int objectType = (i == 0 && obstacleAmount == 3) ? 1 : UnityEngine.Random.Range(0, 2);
-            if (objectType == 0)
-                Instantiate(VehicleObstacles[UnityEngine.Random.Range(0, VehicleObstacles.Length)], new Vector3(obstaclePositions[positions[i]], 0f, farthestZ), new Quaternion(0, 0, 0, 0), RoadParent.transform);
-            else
-                Instantiate(LowObstacles[UnityEngine.Random.Range(0, LowObstacles.Length)], new Vector3(obstaclePositions[positions[i]], 0f, farthestZ), new Quaternion(0, 0, 0, 0), RoadParent.transform);
+            string obstacleType = ((i == 0 && obstacleAmount == 3) || UnityEngine.Random.Range(0, 2) == 0) ? "lowObstacle" : "vehicleObstacle";
+            ObjectPooler.instance.SpawnFromPool(obstacleType, new Vector3(obstaclePositions[positions[i]], 0f, obstacleSpawnDistance));
         }
     }
 

@@ -39,12 +39,9 @@ public class ConstantMovement : MonoBehaviour
             {
                 transform.position = new Vector3(transform.position.x, transform.position.y, farthestZ + transform.position.z);
                 RoadIndex+=15;
-                if (RoadIndex % 6 == 0)
-                {
-                    ObstacleSpawner.instance.SpawnObstacle();
-                }
+                if (RoadIndex % 6 == 0)               
+                    ObstacleSpawner.instance.SpawnObstacle();                
                 else if (RoadIndex % 8 == 0)
-
                     Instantiate(CoinObject, new Vector3(UnityEngine.Random.Range(-1, 2) * 3.5f, 1f, farthestZ), new Quaternion(0, 0, 0, 0), CollectibleParent.transform);
             }
             else

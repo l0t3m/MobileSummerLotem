@@ -8,7 +8,8 @@ public class ObjectPooler : MonoBehaviour
     public class Pool
     {
         public string type;
-        public UnityEngine.Object prefab;
+        public Object[] prefabs;
+        public Transform parent;
         public int size;
     }
 
@@ -31,15 +32,18 @@ public class ObjectPooler : MonoBehaviour
             Queue<GameObject> objPool = new Queue<GameObject>();
             for (int i = 0; i < pool.size; i++)
             {
-                GameObject obj = (GameObject)Instantiate(pool.prefab);
-                obj.SetActive(false);
-                objPool.Enqueue(obj);
+                for (int j = 0; j < pool.prefabs.Length; j++)
+                {
+                    GameObject obj = (GameObject)Instantiate(pool.prefabs[j], pool.parent);
+                    obj.SetActive(false);
+                    objPool.Enqueue(obj);
+                }            
             }
             PoolDict.Add(pool.type, objPool);
         }
     }
 
-    public GameObject SpawnFromPool(string type, Vector3 position, Quaternion rotation)
+    public GameObject SpawnFromPool(string type, Vector3 position)
     {
         if (!PoolDict.ContainsKey(type))
         {
@@ -50,7 +54,6 @@ public class ObjectPooler : MonoBehaviour
         spawnObj = PoolDict[type].Dequeue();
         spawnObj.SetActive(true);
         spawnObj.transform.position = position;
-        spawnObj.transform.rotation = rotation;
 
         PoolDict[type].Enqueue(spawnObj);
         return spawnObj;
