@@ -8,6 +8,7 @@ TagManager:
   - RoadCollider
   - Ground
   - Coin
+  - Obstacle
   layers:
   - Default
   - TransparentFX

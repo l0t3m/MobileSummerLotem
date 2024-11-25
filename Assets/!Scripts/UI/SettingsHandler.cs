@@ -1,8 +1,11 @@
 using DG.Tweening;
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 using UnityEngine.Audio;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class SettingsHandler : MonoBehaviour
@@ -12,18 +15,42 @@ public class SettingsHandler : MonoBehaviour
     [SerializeField] Button[] DifficultyButtons;
     [SerializeField] Button[] InputButtons;
     [SerializeField] Button[] MovementButtons;
+    public SettingsClass Settings { private set; get; }
 
     private void Start()
     {
-        audioSlider.value = PlayerPrefs.GetFloat("SFX", 5f);
-        audioMixer.SetFloat("MasterVolume", CalculateVolumeByNumber(audioSlider.value));
-        ChangeDifficulty(PlayerPrefs.GetInt("Difficulty", 1));
-        ChangeInput(PlayerPrefs.GetInt("Input", 0));
+        if (!File.Exists(Application.persistentDataPath + "/settings.txt"))
+            Settings = new SettingsClass();
+        else
+            Settings = JsonUtility.FromJson<SettingsClass>(File.ReadAllText(Application.persistentDataPath + "/settings.txt"));
+        ApplySettings();
+        SaveSettings();
+    }
+    
+    private void ApplySettings()
+    {
+        if (SceneManager.GetActiveScene().name == "Main")
+        {
+            audioSlider.value = Settings.SFX;
+            audioMixer.SetFloat("MasterVolume", CalculateVolumeByNumber(audioSlider.value));
+        }
+        ChangeDifficulty(Settings.Difficulty);
+        ChangeInput(Settings.Input);
     }
 
+    private void SaveSettings()
+    {
+        string output = JsonUtility.ToJson(Settings);
+        File.WriteAllText(Application.persistentDataPath + "/settings.txt", output);
+        PlayerPrefs.SetFloat("SFX", Settings.SFX);
+        PlayerPrefs.SetInt("Difficulty", Settings.Difficulty);
+        PlayerPrefs.SetInt("Input", Settings.Input);
+        PlayerPrefs.Save();
+    }
     public void ChangeVolume(float num)
     {
-        PlayerPrefs.SetFloat("SFX", num);
+        Settings.SFX = num;
+        SaveSettings();
         audioMixer.SetFloat("MasterVolume", CalculateVolumeByNumber(num));
     }
 
@@ -34,29 +61,41 @@ public class SettingsHandler : MonoBehaviour
 
     public void ChangeDifficulty(int num)
     {
-        PlayerPrefs.SetInt("Difficulty", num);
-        for (int i = 0; i < DifficultyButtons.Length; i++)
+        Settings.Difficulty = num;
+        SaveSettings();
+        if (SceneManager.GetActiveScene().name == "Main")
         {
-            if (i == num)
-                DifficultyButtons[i].interactable = false;
-            else
-                DifficultyButtons[i].interactable = true;
+            for (int i = 0; i < DifficultyButtons.Length; i++)
+            {
+                if (i == num)
+                    DifficultyButtons[i].interactable = false;
+                else
+                    DifficultyButtons[i].interactable = true;
+            }
         }
     }
 
     public void ChangeInput(int num)
     {
-        PlayerPrefs.SetInt("Input", num);
-        for (int i = 0; i < InputButtons.Length; i++)
+        Settings.Input = num;
+        SaveSettings();
+        if (InputButtons.Length != 0)
         {
-            if (i == num)
-                InputButtons[i].interactable = false;
-            else
-                InputButtons[i].interactable = true;
+            for (int i = 0; i < InputButtons.Length; i++)
+            {
+                if (i == num)
+                    InputButtons[i].interactable = false;
+                else
+                    InputButtons[i].interactable = true;
+            }
+            
         }
-        for (int i = 0; i < MovementButtons.Length; i++)
+        else
         {
-            MovementButtons[i].gameObject.SetActive(num == 1);
+            for (int i = 0; i < MovementButtons.Length; i++)
+            {
+                MovementButtons[i].gameObject.SetActive(num == 1);
+            }
         }
     }
 }

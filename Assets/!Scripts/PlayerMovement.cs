@@ -3,11 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerMovement : MonoBehaviour
 {
     [SerializeField] private float horizontalSpeed = 10f;
-    [SerializeField] private float verticalSpeed = 5f;
+    [SerializeField] private float verticalSpeed = 7.5f;
 
     [DoNotSerialize] public Animator animator;
     private Rigidbody rb;
@@ -16,6 +17,7 @@ public class PlayerMovement : MonoBehaviour
 
     private float currentX = 0;
     private float currentY = 0;
+    private int currentPosition = 0;
 
 
 
@@ -23,6 +25,7 @@ public class PlayerMovement : MonoBehaviour
     {
         animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody>();
+        Physics.gravity = new Vector3(0, -35f, 0);
     }
 
     private void Update()
@@ -32,22 +35,29 @@ public class PlayerMovement : MonoBehaviour
 
     public IEnumerator MoveRight(float newX)
     {
-        float originalX = transform.position.x;
-        float currentX = originalX;
-        CanMove = false;
-        while (currentX < newX)
+        if (currentPosition != 1)
         {
-            currentX = Mathf.Clamp(currentX + horizontalSpeed * Time.deltaTime, originalX, newX);
-            rb.MovePosition(new Vector3(currentX, transform.position.y, transform.position.z));
-            yield return null;
+            float originalX = transform.position.x;
+            float currentX = originalX;
+
+            CanMove = false;
+            while (currentX < newX)
+            {
+                currentX = Mathf.Clamp(currentX + horizontalSpeed * Time.deltaTime, originalX, newX);
+                rb.MovePosition(new Vector3(currentX, transform.position.y, transform.position.z));
+                yield return null;
+            }
+
+            CanMove = true;
+            currentPosition++;
         }
-        CanMove = true;
     }
 
     public IEnumerator MoveLeft(float newX)
     {
-
-        float originalX = transform.position.x;
+        if (currentPosition != -1)
+        {
+            float originalX = transform.position.x;
         float currentX = originalX;
         CanMove = false;
         while (currentX > newX)
@@ -56,14 +66,16 @@ public class PlayerMovement : MonoBehaviour
             rb.MovePosition(new Vector3(currentX, transform.position.y, transform.position.z));
             yield return null;
         }
-        CanMove = true;
+            CanMove = true;
+            currentPosition--;
+        }
     }
 
     public void MoveUp()
     {   
         animator.SetBool("IsGrounded", false);
         rb.AddForce(Vector3.up*verticalSpeed, ForceMode.Impulse);
-        transform.position = new Vector3(transform.position.x, Mathf.Clamp(transform.position.y, 0, 30), transform.position.z);
+        transform.position = new Vector3(transform.position.x, Mathf.Clamp(transform.position.y, 0, 5), transform.position.z);
     }
 
 
