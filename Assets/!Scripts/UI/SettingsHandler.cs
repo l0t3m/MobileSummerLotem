@@ -56,7 +56,7 @@ public class SettingsHandler : MonoBehaviour
 
     private float CalculateVolumeByNumber(float num)
     {
-        return num * 10 - 80;
+        return (num > 0) ? (num * 2 - 15) : -80;
     }
 
     public void ChangeDifficulty(int num)

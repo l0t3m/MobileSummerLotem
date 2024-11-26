@@ -6,8 +6,6 @@ public class MultiTouchHandlerPrints : MonoBehaviour
     public PlayerMovement PlayerHorizontalMovement;
     public PauseGame PauseGameScript;
     private Touch startTouch;
-    
-    
 
     void Update()
     {

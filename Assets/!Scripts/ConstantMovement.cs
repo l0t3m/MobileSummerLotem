@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class ConstantMovement : MonoBehaviour
 {
-    float farthestZ = 56f; // Furthest road's Z
+    float farthestZ = 60f; // Furthest road's Z
     float speed = 15f; // The speed of the world moving
 
     [SerializeField] UnityEngine.Object CoinObject;
@@ -19,16 +19,19 @@ public class ConstantMovement : MonoBehaviour
         switch (difficulty)
         {
             case 1:
-                speed *= 1.25f;
+                speed *= 1.2f;
                 break;
             case 2:
-                speed *= 1.5f;
+                speed *= 1.4f;
                 break;
         }
     }
     void Update()
     {
-        transform.position += Vector3.back * speed * Time.deltaTime; // Constant movement
+        int score = ScoreHandler.Instance.GetScore();
+        float scoreModifier = (score < 250) ? 0.75f : (score+500f) / 1000f;
+        scoreModifier = (scoreModifier > 1.4f) ? 1.4f : scoreModifier;
+        transform.position += Vector3.back * speed * scoreModifier * Time.deltaTime ; // Constant movement        
     }
 
     private void OnTriggerEnter(Collider other)
@@ -44,17 +47,15 @@ public class ConstantMovement : MonoBehaviour
                 else if (RoadIndex % 8 == 0)
                     Instantiate(CoinObject, new Vector3(UnityEngine.Random.Range(-1, 2) * 3.5f, 1f, farthestZ), new Quaternion(0, 0, 0, 0), CollectibleParent.transform);
             }
-            else
+            else if (gameObject.tag == "Coin")
                 Destroy(gameObject);
+            else
+                gameObject.SetActive(false);
         }
-    }
-
-    private void OnCollisionEnter(Collision collision)
-    {
-        if (gameObject.tag == "Obstacle" && collision.gameObject.tag == "Player")
+        else if (other.tag == "Player" && gameObject.tag == "Obstacle")
         {
             Time.timeScale = 0;
             LossHandler.Instance.OnDeath();
         }
-    }
+    }    
 }

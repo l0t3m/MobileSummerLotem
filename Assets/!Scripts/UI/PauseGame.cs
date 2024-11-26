@@ -17,14 +17,10 @@ public class PauseGame : MonoBehaviour
             DoPause(false);
         else
             DoPause(true);
-        
     }
-
-
 
     public void DoPause()
     {
-        
         DoPause(!isPaused);
     }
 

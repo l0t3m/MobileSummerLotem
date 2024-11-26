@@ -23,19 +23,19 @@ public class ObstacleSpawner : MonoBehaviour
         int[] positions = new int[] { -2, -2, -2 };
         for (int i = 0; i < obstacleAmount; i++)
         {
-            positions[i] = GenerateObstaclePosition(positions[0], positions[1]);
+            positions[i] = GenerateExcludedInt(positions[0], positions[1], 3);
             string obstacleType = ((i == 0 && obstacleAmount == 3) || UnityEngine.Random.Range(0, 2) == 0) ? "lowObstacle" : "vehicleObstacle";
             ObjectPooler.instance.SpawnFromPool(obstacleType, new Vector3(obstaclePositions[positions[i]], 0f, obstacleSpawnDistance));
         }
     }
 
-    private int GenerateObstaclePosition(int pos1, int pos2)
+    public int GenerateExcludedInt(int pos1, int pos2, int length)
     {
         var exclude = new HashSet<int>() { pos1, pos2 };
-        var range = Enumerable.Range(0, 3).Where(i => !exclude.Contains(i));
+        var range = Enumerable.Range(0, length).Where(i => !exclude.Contains(i));
 
         var rand = new System.Random();
-        int index = rand.Next(0, 3 - exclude.Count);
+        int index = rand.Next(0, length - exclude.Count);
         return range.ElementAt(index);
     }
 }

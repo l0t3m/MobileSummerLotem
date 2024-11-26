@@ -25,15 +25,17 @@ public class LossHandler : MonoBehaviour
         lossCanvas.enabled = true;
 
         int currentScore = ScoreHandler.Instance.GetScore();
-        csText.text = "SCORE: " + ScoreHandler.Instance.FormatScoreText(currentScore);
-
-        int.TryParse(File.ReadAllText(Application.persistentDataPath + "/highscore.txt"), out int highScore);
+        csText.text = "Score: " + ScoreHandler.Instance.FormatScoreText(currentScore);
+        int highScore = 0;
+        if (!File.Exists(Application.persistentDataPath + "/highscore.txt"))
+            File.Create(Application.persistentDataPath + "/highscore.txt").Close();
+        int.TryParse(File.ReadAllText(Application.persistentDataPath + "/highscore.txt"), out highScore);
         if (currentScore > highScore)
         {
             highScore = currentScore;
             ScoreHandler.Instance.SaveHighScore();
         }
-        hsText.text = "HIGHSCORE: " + ScoreHandler.Instance.FormatScoreText(highScore);
-
+        hsText.text = "Highscore: " + ScoreHandler.Instance.FormatScoreText(highScore);
+        ScoreHandler.Instance.SaveCoins();
     }
 }

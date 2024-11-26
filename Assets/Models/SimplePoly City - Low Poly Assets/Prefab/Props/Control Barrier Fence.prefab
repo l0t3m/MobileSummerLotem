@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3300000}
   - component: {fileID: 2300000}
   - component: {fileID: 7385558314635079573}
-  - component: {fileID: -978772413010697329}
+  - component: {fileID: 2500032502562359670}
   m_Layer: 0
   m_Name: Control Barrier Fence
   m_TagString: Obstacle
@@ -97,13 +97,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6dbc4d2d3461f274d8236370c73dd301, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  VehicleObstacles: []
-  LowObstacles: []
   CoinObject: {fileID: 0}
   RoadParent: {fileID: 0}
   CollectibleParent: {fileID: 0}
   RoadIndex: 0
---- !u!65 &-978772413010697329
+--- !u!65 &2500032502562359670
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -118,9 +116,9 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 3.6, y: 2.047512, z: 0.26303127}
-  m_Center: {x: 0, y: 1.0230794, z: 0.0064094514}
+  m_Size: {x: 3.6, y: 2.047512, z: 0.20000002}
+  m_Center: {x: 0, y: 1.0230794, z: -0.00000026077032}

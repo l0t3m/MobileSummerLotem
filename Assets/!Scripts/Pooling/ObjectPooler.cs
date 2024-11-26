@@ -21,25 +21,25 @@ public class ObjectPooler : MonoBehaviour
     }
 
     public List<Pool> pools;
-    public Dictionary<string, Queue<GameObject>> PoolDict;
+    public Dictionary<string, List<GameObject>> PoolDict;
 
     GameObject spawnObj;
     private void Start()
     {
-        PoolDict = new Dictionary<string, Queue<GameObject>>();
+        PoolDict = new Dictionary<string, List<GameObject>>();
         foreach (var pool in pools)
         {
-            Queue<GameObject> objPool = new Queue<GameObject>();
-            for (int i = 0; i < pool.size; i++)
+            List<GameObject> objList = new List<GameObject>();
+            for (int i = 0; i < pool.prefabs.Length; i++)
             {
-                for (int j = 0; j < pool.prefabs.Length; j++)
+                for (int j = 0; j < pool.size; j++)
                 {
-                    GameObject obj = (GameObject)Instantiate(pool.prefabs[j], pool.parent);
+                    GameObject obj = (GameObject)Instantiate(pool.prefabs[i], pool.parent);
                     obj.SetActive(false);
-                    objPool.Enqueue(obj);
+                    objList.Add(obj);
                 }            
             }
-            PoolDict.Add(pool.type, objPool);
+            PoolDict.Add(pool.type, objList);
         }
     }
 
@@ -50,12 +50,13 @@ public class ObjectPooler : MonoBehaviour
             Debug.LogWarning("Pool doesn't have pooltype " + type);
             return null;
         }
+        do       
+            spawnObj = PoolDict[type][Random.Range(0, PoolDict[type].Count)];
+        while (spawnObj.activeInHierarchy);
 
-        spawnObj = PoolDict[type].Dequeue();
         spawnObj.SetActive(true);
         spawnObj.transform.position = position;
 
-        PoolDict[type].Enqueue(spawnObj);
         return spawnObj;
     }
 }

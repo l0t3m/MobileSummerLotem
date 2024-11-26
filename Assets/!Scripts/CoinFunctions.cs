@@ -7,7 +7,6 @@ public class CoinFunctions : MonoBehaviour
 {
     private void OnTriggerEnter(Collider other)
     {
-
         if (other.tag == "Coin")
         {
             ScoreHandler.Instance.AddToScoreClass(1, false);

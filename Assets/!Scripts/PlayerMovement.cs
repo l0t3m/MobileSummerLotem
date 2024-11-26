@@ -78,8 +78,6 @@ public class PlayerMovement : MonoBehaviour
         transform.position = new Vector3(transform.position.x, Mathf.Clamp(transform.position.y, 0, 5), transform.position.z);
     }
 
-
-
     private bool IsInputValid(SwipeDirection swipeDir)
     {
         if (swipeDir == SwipeDirection.Left && currentX == -3.5f)

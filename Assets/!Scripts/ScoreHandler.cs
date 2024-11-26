@@ -69,6 +69,16 @@ public class ScoreHandler : MonoBehaviour
         File.WriteAllText(scorePath, score.value.ToString());
     }
 
+    public void SaveCoins()
+    {
+        string coinPath = Application.persistentDataPath + "/coins.txt";
+        int coins = 0;
+        if (!File.Exists(coinPath))
+            File.Create(coinPath).Close();
+        else
+            int.TryParse(File.ReadAllText(coinPath), out coins);
+        File.WriteAllText(coinPath, (coins+coin.value).ToString());
+    }
     public int GetScore()
     {
         return Instance.score.value;

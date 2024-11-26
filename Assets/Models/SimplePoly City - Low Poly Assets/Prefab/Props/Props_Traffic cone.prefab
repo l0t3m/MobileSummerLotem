@@ -97,9 +97,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6dbc4d2d3461f274d8236370c73dd301, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  VehicleObstacles: []
-  LowObstacles: []
+  CoinObject: {fileID: 0}
   RoadParent: {fileID: 0}
+  CollectibleParent: {fileID: 0}
   RoadIndex: 0
 --- !u!65 &9138791106043679892
 BoxCollider:
@@ -116,7 +116,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
